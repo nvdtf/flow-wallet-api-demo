@@ -93,11 +93,11 @@ List an accounts transactions:
 curl http://localhost:3000/v1/accounts/0x33b6a9a32ae5cded/transactions
 ```
 
+**Note:** You can add `?sync=1` to the end of the URL to make a blocking transaction request. This will skip the job system to return a result:
+
 ```bash
 curl -X POST "http://localhost:3000/v1/accounts/0x33b6a9a32ae5cded/transactions?sync=1" \
     -H "Content-Type: application/json" \
     -H "Idempotency-Key: 3" \
     -d '{"code":"transaction{prepare(a: AuthAccount){}}"}'
 ```
-
-**Note:** You can add `?sync=1` to the end of the URL to make a blocking transaction request. This will skip the job system to return a result.

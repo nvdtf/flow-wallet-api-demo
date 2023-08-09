@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_DB: wallet
+      POSTGRES_USER: wallet
+      POSTGRES_PASSWORD: wallet
+    ports:
+      - "5432:5432"
+
+  wallet-api:
+    image: ghcr.io/flow-hydraulics/flow-wallet-api:0.11
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./.env.testnet
+    environment:
+      FLOW_WALLET_DATABASE_DSN: postgresql://wallet:wallet@db:5432/wallet
+      FLOW_WALLET_DATABASE_TYPE: psql
+    depends_on:
+      - db

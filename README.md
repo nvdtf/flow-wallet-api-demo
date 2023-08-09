@@ -62,4 +62,42 @@ curl http://localhost:3000/v1/jobs/160a2510-c0ef-467d-ae01-ad5a3b1ba616
 
 When the job is `COMPLETE` the new account's address will be available in the `result` field.
 
+You can also list all accounts:
+
+```bash
+curl http://localhost:3000/v1/accounts
+```
+
+**Note:** You can add `?sync=1` to the end of the URL to make a blocking transaction request. This will skip the job system to return a result.
+
 ### Transactions
+
+You can send transactions from custodied accounts:
+
+```bash
+curl -X POST "http://localhost:3000/v1/accounts/0x33b6a9a32ae5cded/transactions" \
+    -H "Content-Type: application/json" \
+    -H "Idempotency-Key: 2" \
+    -d '{"code":"transaction{prepare(a: AuthAccount){}}"}'
+```
+
+Remember to replace the account address with a valid custodial account. In response, a job will be created so you can check the result asynchronously. Transaction hash is also returned in `transactionId`.
+
+```bash
+curl http://localhost:3000/v1/jobs/278de8cb-14b2-413e-bf04-8a83b99c0338
+```
+
+List an accounts transactions:
+
+```bash
+curl http://localhost:3000/v1/accounts/0x33b6a9a32ae5cded/transactions
+```
+
+```bash
+curl -X POST "http://localhost:3000/v1/accounts/0x33b6a9a32ae5cded/transactions?sync=1" \
+    -H "Content-Type: application/json" \
+    -H "Idempotency-Key: 3" \
+    -d '{"code":"transaction{prepare(a: AuthAccount){}}"}'
+```
+
+**Note:** You can add `?sync=1` to the end of the URL to make a blocking transaction request. This will skip the job system to return a result.
